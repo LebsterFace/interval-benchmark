@@ -137,36 +137,19 @@ for (let i = 1; i <= runs; i++) {
 }
 
 process.stderr.write(CLEAR_LINE);
-console.log("=========================[ Results ]=========================");
-// Get length of the longest name
-const longestName = Math.max(...Array.from(results.keys(), s => s.length));
 
 // Calculate average runtime per input, then sort by
 const values = [...results.entries()]
 	.map(([name, runtimes]) => [name, average(runtimes) / inputCount]) // Get average runtime per input
 	.sort(([, a], [, b]) => b - a); // Sort ascending based on average runtime
 
-let last = null;
-for (const [pkg, avgRuntime] of values) {
-	const name = pkg.padEnd(longestName);
-	const ops_per_second = 1000 / avgRuntime;
-	const ops_string = (ops_per_second / 1e6).toLocaleString([], {
+console.log("| Name | Operations per second");
+console.log("| - | - |");
+
+for (const [name, avgRuntime] of values) {
+	console.log(`| ${name} | ${(1000 / avgRuntime).toLocaleString([], {
 		notation: "compact",
 		minimumFractionDigits: 1,
 		maximumFractionDigits: 1
-	}).padStart(4) + "M";
-
-	process.stdout.write(`${yellow(name)} : ${cyan(ops_string)} ops/s.`);
-	if (last !== null) {
-		const percentage = 100 * ops_per_second / last;
-
-		process.stdout.write(" (");
-		process.stdout.write(green(`+${(percentage - 100).toFixed(2)}%`));
-		process.stdout.write(")");
-	}
-
-	last = ops_per_second;
-	process.stdout.write("\n");
+	})} |`);
 }
-
-console.log("\x1b[0m");
