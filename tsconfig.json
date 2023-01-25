@@ -8,7 +8,8 @@
 		"moduleResolution": "Node",
 		"outDir": "dist",
 		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"noUnusedLocals": true
 	},
 	"include": [
 		"src/**/*.ts"
