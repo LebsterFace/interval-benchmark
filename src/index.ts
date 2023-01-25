@@ -13,31 +13,33 @@ const shuffleArray = <T>(originalArray: T[]) => {
 const CLEAR_LINE = "\x1b[2K\r";
 const green = (s: string | number) => `\x1b[32m${s}\x1b[0m`;
 const yellow = (s: string | number) => `\x1b[33m${s}\x1b[0m`;
-const cyan = (s: string | number) => `\x1b[36m${s}\x1b[0m`;
 
 const inputCount = 1e5;
 const getInputs = (max = Math.floor(Number.MAX_SAFE_INTEGER / 10)) =>
 	Array.from({ length: inputCount }, () => Math.floor(Math.random() * max));
-const results = new Map;
+
+type TestResults = { runtimes: number[], rawName: string, subName: string | null; };
+const results = new Map<string, TestResults>;
 
 // Returns a function which runs the given function on each of the inputs
-const test = (name: string, callback: (n: number) => string | null, mapperFn?: (n: number) => number) => {
-	if (!results.has(name)) results.set(name, []);
+const test = (rawName: string, callback: (n: number) => string | null, mapperFn: null | ((n: number) => number) = null, subName: string | null = null) => {
+	const name = subName === null ? rawName : `${rawName} (${subName})`;
+	if (results.has(name)) throw new Error("Test results for " + name + " already present.");
+	const object: TestResults = { rawName, subName, runtimes: [] };
+	results.set(name, object);
 	return {
 		name,
 		fn: (rawInputs: number[]) => {
-			const inputs = mapperFn ? rawInputs.map(mapperFn) : rawInputs;
+			const inputs = mapperFn !== null ? rawInputs.map(mapperFn) : rawInputs;
 			let time = performance.now();
 			for (const d of inputs) void callback(d);
 			const duration = performance.now() - time;
-			results.get(name).push(duration);
+			object.runtimes.push(duration);
 		}
 	};
 };
 
-import prettyMilliseconds from "pretty-ms";
-import { formatMilliseconds } from "format-ms";
-
+//#region Imports
 // Incorrectly typed modules:
 import prettyPrintMs from "pretty-print-ms";
 const { default: prettyPrint } = prettyPrintMs as unknown as { default: typeof prettyPrintMs; };
@@ -89,12 +91,15 @@ import tinyHumanTime from "tiny-human-time";
 import { formatMsSpanWords, formatMsSpanNearestUnit } from "@spacepumpkin/format-timespan";
 import { Timespan } from "@brycemarshall/timespan";
 import { TimeSpan as TimeSpanTS } from "timespan-ts";
+import prettyMilliseconds from "pretty-ms";
+import { formatMilliseconds } from "format-ms";
+//#endregion
 
 const tests = [
-	test("timespan-ts", d => TimeSpanTS.fromMilliseconds(1287948).toString()),
+	test("timespan-ts", d => TimeSpanTS.fromMilliseconds(d).toString()),
 	test("@brycemarshall/timespan", d => Timespan.fromMilliseconds(d).toString()),
-	test("format-timespan (nearest)", formatMsSpanNearestUnit),
-	test("format-timespan (words)", formatMsSpanWords),
+	test("@spacepumpkin/format-timespan", formatMsSpanNearestUnit, null, "nearest"),
+	test("@spacepumpkin/format-timespan", formatMsSpanWords, null, "words"),
 	test("tiny-human-time", tinyHumanTime),
 	test("ms-time", msTime),
 	test("beautiful.ms", beautifulMs),
@@ -124,7 +129,7 @@ const tests = [
 	test("prettytime", prettytime),
 	test("@lukeed/ms", lukeedformat),
 	test("interval-conversions", stringifyInterval),
-	test("interval-conversions (short)", stringifyIntervalShort),
+	test("interval-conversions", stringifyIntervalShort, null, 'short'),
 ];
 
 const runs = 100;
@@ -138,18 +143,35 @@ for (let i = 1; i <= runs; i++) {
 
 process.stderr.write(CLEAR_LINE);
 
+const formatNumber = (n: number) => n.toLocaleString([], {
+	notation: "compact",
+	minimumFractionDigits: 1,
+	maximumFractionDigits: 1
+});
+
+const getDownloads = async (name: string): Promise<string> => {
+	const response = await fetch("https://api.npmjs.org/downloads/point/last-week/" + name);
+	const { downloads } = (await response.json() as { downloads: number; start: string; end: string; package: string; });
+	if (downloads < 10) return '< 10';
+	if (downloads < 100) return '< 100';
+	if (downloads < 1000) return '< 1k';
+	return formatNumber(downloads);
+};
+
 // Calculate average runtime per input, then sort by
-const values = [...results.entries()]
-	.map(([name, runtimes]) => [name, average(runtimes) / inputCount]) // Get average runtime per input
-	.sort(([, a], [, b]) => b - a); // Sort ascending based on average runtime
+const values = [...results.values()]
+	.map(({ rawName, subName, runtimes }) => ({
+		rawName,
+		subName,
+		averageRuntime: average(runtimes) / inputCount // Get average runtime per input
+	})).sort((a, b) => b.averageRuntime - a.averageRuntime); // Sort ascending based on average runtime
 
-console.log("| Name | Operations per second");
-console.log("| - | - |");
+console.log("| Name | Operations per second | Weekly downloads |");
+console.log("| - | - | - |");
 
-for (const [name, avgRuntime] of values) {
-	console.log(`| ${name} | ${(1000 / avgRuntime).toLocaleString([], {
-		notation: "compact",
-		minimumFractionDigits: 1,
-		maximumFractionDigits: 1
-	})} |`);
+for (const { averageRuntime, rawName, subName } of values) {
+	console.log(`| ${subName === null ?
+		`\`${rawName}\`` :
+		`\`${rawName}\` (${subName})`
+	} | ${formatNumber(1000 / averageRuntime)} | ${await getDownloads(rawName)} |`);
 }
