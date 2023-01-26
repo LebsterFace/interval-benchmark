@@ -14,7 +14,7 @@ const CLEAR_LINE = "\x1b[2K\r";
 const green = (s: string | number) => `\x1b[32m${s}\x1b[0m`;
 const yellow = (s: string | number) => `\x1b[33m${s}\x1b[0m`;
 
-const inputCount = 1e5;
+const inputCount = 1e6;
 const getInputs = (max = Math.floor(Number.MAX_SAFE_INTEGER / 10)) =>
 	Array.from({ length: inputCount }, () => Math.floor(Math.random() * max));
 
@@ -132,7 +132,7 @@ const tests = [
 	test("interval-conversions", stringifyIntervalShort, null, 'short'),
 ];
 
-const runs = 100;
+const runs = 10;
 for (let i = 1; i <= runs; i++) {
 	const inputs = getInputs();
 	for (const { name, fn } of shuffleArray(tests)) {
