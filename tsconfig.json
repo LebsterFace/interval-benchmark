@@ -1,19 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "ES2022",
+		"target": "ES2024",
 		"module": "ESNext",
-		"strict": true,
-		"alwaysStrict": true,
-		"moduleDetection": "force",
-		"moduleResolution": "Node",
+		"rootDir": "./src",
 		"outDir": "dist",
-		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"noUnusedLocals": true,
-		"inlineSourceMap": true,
-		"noImplicitAny": true
+		"allowSyntheticDefaultImports": true,
+		"types": ["node"]
 	},
-	"include": [
-		"src/**/*.ts"
-	]
 }

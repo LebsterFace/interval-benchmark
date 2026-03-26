@@ -8,37 +8,36 @@ Interval stringiciation is the conversion of an amount of time (usually measured
 ## Results
 | Name | Operations per second | Weekly downloads |
 | - | - | - |
-| `duration-time-conversion` | 303.7K | < 1k |
-| `interspell` | 333.3K | < 10 |
-| `enhanced-ms` | 424.2K | < 1k |
-| `humanize-duration` | 589.0K | 675.5K |
-| `friendly-duration` | 998.4K | < 1k |
-| `pretty-print-ms` | 1.0M | < 1k |
-| `@spacepumpkin/format-timespan` (nearest) | 1.1M | < 10 |
-| `beautiful.ms` | 1.1M | < 10 |
-| `format-ms` | 1.2M | < 100 |
-| `@jrohlandt/hhmmss` | 1.3M | < 10 |
-| `@spacepumpkin/format-timespan` (words) | 1.4M | < 10 |
-| `yet-another-duration` | 1.5M | < 10 |
-| `pretty-ms` | 1.6M | 5.0M |
-| `stringtime` | 1.7M | < 10 |
-| `interval-conversions` | 1.9M | < 10 |
-| `time-duration-stringify` | 2.1M | < 10 |
-| `simple-duration-converter` | 2.3M | < 10 |
-| `simple-duration` | 2.4M | < 1k |
-| `ms-human-format` | 2.4M | < 10 |
-| `custom-human-time` | 2.9M | < 100 |
-| `prettytime` | 3.1M | < 10 |
-| `ms-time` | 3.7M | < 10 |
-| `format-duration` | 4.1M | 10.7K |
-| `f-duration` | 4.5M | < 10 |
-| `timespan-ts` | 4.9M | < 100 |
-| `@brycemarshall/timespan` | 5.3M | < 10 |
-| `@stdlib/time-ms2duration` | 6.0M | < 100 |
-| `humanized-duration` | 6.1M | < 10 |
-| `tiny-human-time` | 9.9M | 17.2K |
-| `readable-timespan` | 10.1M | < 1k |
-| `interval-conversions` (short) | 12.7M | < 10 |
-| `casual-duration` | 16.2M | < 10 |
-| `ms` | 18.3M | 183.7M |
-| `@lukeed/ms` | 18.6M | 38.3K |
+| `duration-time-conversion` | 566.9k | < 1k |
+| `interspell` | 625.1k | < 10 |
+| `humanize-duration` | 992.3k | 2.4m |
+| `enhanced-ms` | 1.2m | 7.0k |
+| `@spacepumpkin/format-timespan` (nearest) | 1.3m | < 10 |
+| `friendly-duration` | 1.5m | < 100 |
+| `format-ms` | 1.7m | < 10 |
+| `@spacepumpkin/format-timespan` (words) | 1.7m | < 10 |
+| `beautiful.ms` | 1.8m | < 10 |
+| `yet-another-duration` | 2.1m | < 10 |
+| `pretty-print-ms` | 2.1m | < 1k |
+| `pretty-ms` | 2.2m | 20.0m |
+| `interval-conversions` | 2.3m | < 10 |
+| `@jrohlandt/hhmmss` | 2.5m | < 10 |
+| `stringtime` | 2.6m | < 10 |
+| `ms-human-format` | 3.1m | < 10 |
+| `time-duration-stringify` | 3.2m | < 10 |
+| `simple-duration-converter` | 3.4m | < 10 |
+| `simple-duration` | 3.6m | < 1k |
+| `ms-time` | 5.0m | < 10 |
+| `prettytime` | 5.2m | < 100 |
+| `custom-human-time` | 5.3m | < 100 |
+| `timespan-ts` | 6.1m | < 1k |
+| `format-duration` | 6.7m | 32.5k |
+| `f-duration` | 6.7m | < 10 |
+| `@stdlib/time-ms2duration` | 8.1m | < 10 |
+| `humanized-duration` | 9.0m | < 10 |
+| `tiny-human-time` | 12.3m | 34.1k |
+| `readable-timespan` | 12.8m | < 1k |
+| `interval-conversions` (short) | 15.1m | < 10 |
+| `@lukeed/ms` | 20.0m | 3.1m |
+| `casual-duration` | 21.4m | < 10 |
+| `ms` | 25.2m | 428.7m |

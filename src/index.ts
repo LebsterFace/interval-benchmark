@@ -1,3 +1,35 @@
+import * as sd from "simple-duration";
+import DT from "duration-time-conversion";
+import HumanTime from "custom-human-time";
+import Interspell from "interspell";
+import beautifulMs from "beautiful.ms";
+import ems from "enhanced-ms";
+import formatDuration from "format-duration";
+import friendlyDuration from "friendly-duration";
+import humanizeDuration from "humanize-duration";
+import humanized_duration from "humanized-duration";
+import ms from "ms";
+import ms2duration from "@stdlib/time-ms2duration";
+import msTime from "ms-time";
+import prettyMilliseconds from "pretty-ms";
+import prettyPrintMs from "pretty-print-ms";
+import prettytime from "prettytime";
+import sdc from "simple-duration-converter";
+import st from "stringtime";
+import tinyHumanTime from "tiny-human-time";
+import yad from "yet-another-duration";
+import { TimeSpan as TimeSpanTS } from "timespan-ts";
+import { Timespan as ReadableTimespan } from "readable-timespan";
+import { format as casualDuration } from "casual-duration";
+import { format as lukeedformat } from "@lukeed/ms";
+import { formatDuration as fDuration } from "f-duration";
+import { formatMilliseconds } from "format-ms";
+import { formatMs } from "ms-human-format";
+import { formatMsSpanWords, formatMsSpanNearestUnit } from "@spacepumpkin/format-timespan";
+import { mstohhmmss } from "@jrohlandt/hhmmss";
+import { stringifyInterval, stringifyIntervalShort } from "interval-conversions";
+import { toStringLong } from "time-duration-stringify";
+
 const average = (array: number[]) => array.reduce((a, b) => a + b) / array.length;
 
 const shuffleArray = <T>(originalArray: T[]) => {
@@ -39,65 +71,12 @@ const test = (rawName: string, callback: (n: number) => string | null, mapperFn:
 	};
 };
 
-//#region Imports
-// Incorrectly typed modules:
-import prettyPrintMs from "pretty-print-ms";
 const { default: prettyPrint } = prettyPrintMs as unknown as { default: typeof prettyPrintMs; };
-
-// No types:
-// @ts-expect-error
-import HumanTime from "custom-human-time";
 const humanTime = new HumanTime() as { print: (n: number) => string; };
-// @ts-expect-error
-import { mstohhmmss } from "@jrohlandt/hhmmss";
-// @ts-expect-error
-import prettytime from "prettytime";
-// @ts-expect-error
-import * as sd from "simple-duration";
-// @ts-expect-error
-import DT from "duration-time-conversion";
-// @ts-expect-error
-import { toStringLong } from "time-duration-stringify";
-// @ts-expect-error
-import { format as casualDuration } from "casual-duration";
-// @ts-expect-error
-import humanized_duration from "humanized-duration";
-// @ts-expect-error
-import st from "stringtime";
-// @ts-expect-error
-import Interspell from "interspell";
-// @ts-expect-error
-import sdc from "simple-duration-converter";
-// @ts-expect-error
-import beautifulMs from "beautiful.ms";
-// @ts-expect-error
-import msTime from "ms-time";
-
-// Types! :D
-import ms from "ms";
-import { formatDuration as fDuration } from "f-duration";
-import formatDuration from "format-duration";
-import ms2duration from "@stdlib/time-ms2duration";
-import { format as lukeedformat } from "@lukeed/ms";
-import { stringifyInterval, stringifyIntervalShort } from "interval-conversions";
-import humanizeDuration from "humanize-duration";
-import friendlyDuration from "friendly-duration";
-import yad from "yet-another-duration";
-import { Timespan as ReadableTimespan } from "readable-timespan";
 const readableTimespan = new ReadableTimespan();
-import ems from "enhanced-ms";
-import { formatMs } from "ms-human-format";
-import tinyHumanTime from "tiny-human-time";
-import { formatMsSpanWords, formatMsSpanNearestUnit } from "@spacepumpkin/format-timespan";
-import { Timespan } from "@brycemarshall/timespan";
-import { TimeSpan as TimeSpanTS } from "timespan-ts";
-import prettyMilliseconds from "pretty-ms";
-import { formatMilliseconds } from "format-ms";
-//#endregion
 
 const tests = [
 	test("timespan-ts", d => TimeSpanTS.fromMilliseconds(d).toString()),
-	test("@brycemarshall/timespan", d => Timespan.fromMilliseconds(d).toString()),
 	test("@spacepumpkin/format-timespan", formatMsSpanNearestUnit, null, "nearest"),
 	test("@spacepumpkin/format-timespan", formatMsSpanWords, null, "words"),
 	test("tiny-human-time", tinyHumanTime),
